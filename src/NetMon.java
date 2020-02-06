@@ -27,8 +27,8 @@ public class NetMon extends JPanel{
 	private Timer rendertimer;
 	private Timer clockstimer;
 	private Timer updatetimer;
+	private Timer phasetimer;
 	private Graphics g;
-	private static boolean optimized = false;
 	public ArrayList<Service> services = new ArrayList<Service>();
 
 	/**
@@ -42,16 +42,16 @@ public class NetMon extends JPanel{
 		startTimers();
 		try {
 			loadServices("Services.NetMon");
+			Settings.loadSettings("settings.NetMon");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
 	private void startTimers() {
-		startTimer(rendertimer, 1000, new RenderTimerListener());
+		startTimer(rendertimer, 50, new RenderTimerListener());
 		startTimer(clockstimer, 1000, new ClocksTimerListener());
 		startTimer(updatetimer, 1000, new UpdateTimerListener());
+		startTimer(phasetimer, 1000, new PhaseTimerListener());
 	}
 	
 	private void startTimer(Timer timer, int milliseconds, ActionListener timerlistener) {
@@ -81,7 +81,7 @@ public class NetMon extends JPanel{
 			int size = 250;
 			int gap = 50;
 			String statusMsg = "";
-			if (optimized) {
+			if (Settings.compact) {
 				gap = (WIDTH%size)/(WIDTH/size);
 			}
 			int xpos = gap;
@@ -95,7 +95,6 @@ public class NetMon extends JPanel{
 					g.setColor(Color.yellow);
 					statusMsg = "Responded Late";
 				} else if (t == Service.status.CRITICAL) {
-					temp.switchPhase();
 					statusMsg = "Critically Slow";
 					if (temp.phase) {
 						g.setColor(Color.yellow);
@@ -106,7 +105,6 @@ public class NetMon extends JPanel{
 					g.setColor(Color.orange);
 					statusMsg = "Missed Ping";
 				}else if (t == Service.status.DOWN) {
-					temp.switchPhase();
 					statusMsg = "Offline";
 					if (temp.phase) {
 						g.setColor(Color.red);
@@ -160,6 +158,22 @@ public class NetMon extends JPanel{
 
 	}
 
+	private class PhaseTimerListener implements ActionListener, Runnable {
+		public void actionPerformed(ActionEvent e) {
+			Thread t = new Thread(this);
+			t.start();
+		}
+
+		@Override
+		public void run() {
+			for(Service temp: services) {
+				temp.switchPhase();
+			}
+		}
+
+
+	}
+
 	private class UpdateTimerListener implements ActionListener, Runnable {
 		public void actionPerformed(ActionEvent e) {
 			Thread t = new Thread(this);
@@ -185,11 +199,8 @@ public class NetMon extends JPanel{
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 	}
-
-	public static void main(String[] args) {
-		if(args.length > 0) {
-			optimized = Boolean.getBoolean(args[0]);
-		}
+	
+	private static void createFrame() {
 		JFrame frame = new JFrame();
 		frame.setSize((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(), (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		frame.setLocation(0, 0);
@@ -199,6 +210,10 @@ public class NetMon extends JPanel{
 		frame.setResizable(false);
 		frame.setContentPane(new NetMon());
 		frame.setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		createFrame();
 	}
 
 

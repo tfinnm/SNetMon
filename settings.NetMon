@@ -1,0 +1,6 @@
+#Render Settings
+compact=false
+#Status Thresholds
+late=5
+critical=100
+miss=1000
