@@ -47,37 +47,7 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 		}
 		int xpos = gap;
 		for(Service temp: ServiceManager.services) {
-			Service.status t = temp.savedStatus;
-			if (t == Service.status.UP) {
-				g.setColor(Color.green);
-				statusMsg = "O.K.";
-			} else if (t == Service.status.SLOW) {
-				g.setColor(Color.yellow);
-				statusMsg = "Responded Late";
-			} else if (t == Service.status.CRITICAL) {
-				statusMsg = "Critically Slow";
-				if (temp.phase) {
-					g.setColor(Color.yellow);
-				} else {
-					g.setColor(Color.red);
-				}
-			} else if (t == Service.status.MISSED) {
-				g.setColor(Color.orange);
-				statusMsg = "Missed Ping";
-			}else if (t == Service.status.DOWN) {
-				statusMsg = "Offline";
-				if (temp.phase) {
-					g.setColor(Color.red);
-				} else {
-					g.setColor(Color.black);
-				}
-			} else if (t == Service.status.ERROR) {
-				g.setColor(Color.blue);
-				statusMsg = "ERROR";
-			} else {
-				statusMsg = "ERROR";
-				g.setColor(Color.blue);
-			}
+			statusMsg = UIHelpers.setColor(g, temp);
 			g.drawRect(xpos, ypos, size, size);
 			g.setFont(new Font("Ubuntu", Font.BOLD, 30));
 			g.drawString(statusMsg, (xpos+size/2)-(g.getFontMetrics(g.getFont()).stringWidth(statusMsg)/2), ypos+(size/3)*2);
@@ -93,6 +63,22 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 				xpos = gap;
 				ypos += size + gap;
 			}
+		}
+		
+		if(UIManager.featured != null) {
+			g.setColor(Color.black);
+			g.fillRect(UIManager.WIDTH/4, UIManager.HEIGHT/4, UIManager.WIDTH/2, UIManager.HEIGHT/2);
+			statusMsg = UIHelpers.setColor(g, UIManager.featured);
+			if (g.getColor().equals(Color.black)) g.setColor(Color.white);
+			g.drawRect(UIManager.WIDTH/4, UIManager.HEIGHT/4, UIManager.WIDTH/2, UIManager.HEIGHT/2);
+			g.setFont(new Font("Ubuntu", Font.BOLD, 70));
+			g.drawString(statusMsg.toUpperCase(), (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth(statusMsg.toUpperCase())/2), UIManager.HEIGHT/2-35);
+			g.setColor(Color.white);
+			g.setFont(new Font("Ubuntu", Font.BOLD, 50));
+			g.drawString(UIManager.featured.name, (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth(UIManager.featured.name)/2), UIManager.HEIGHT/4+60);
+			g.setFont(new Font("Ubuntu", Font.PLAIN, 30));
+			g.drawString(UIManager.featured.adress, (UIManager.WIDTH*3/8)+5, UIManager.HEIGHT*3/4-35);
+			g.drawString(UIManager.featured.getUp(), (UIManager.WIDTH*5/8)-(g.getFontMetrics(g.getFont()).stringWidth(UIManager.featured.getUp()))-5, UIManager.HEIGHT*3/4-35);
 		}
 
 		// This is the last line of actionPerformed

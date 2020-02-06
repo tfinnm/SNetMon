@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import input.KeyboardHandler;
 import services.Service;
 
 public class UIManager {
@@ -13,7 +14,7 @@ public class UIManager {
 	public static final int HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 	static Panel ui = new Panel();
 	
-	static Service feature;
+	public static Service featured;
 	
 	public static void createFrame() {
 		JFrame frame = new JFrame();
