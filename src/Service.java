@@ -60,7 +60,7 @@ public class Service {
 		} catch (UnknownHostException e) {
 			return miss();
 		}
-		if (net.isReachable(Settings.latet)) {
+		if (net.isReachable(SettingsManager.latet)) {
 			if (down) {
 				uptime = 0;
 				down = false;
@@ -68,7 +68,7 @@ public class Service {
 			misses = 0;
 			savedStatus = status.UP;
 			return status.UP;
-		} else if (net.isReachable(Settings.critt)) {
+		} else if (net.isReachable(SettingsManager.critt)) {
 			if (down) {
 				uptime = 0;
 				down = false;
@@ -77,7 +77,7 @@ public class Service {
 			savedStatus = status.SLOW;
 			return status.SLOW;
 		}
-		if (misses < 1 && net.isReachable(Settings.misst)) {
+		if (misses < 1 && net.isReachable(SettingsManager.misst)) {
 			savedStatus = status.CRITICAL;
 			return status.CRITICAL;
 		} else {

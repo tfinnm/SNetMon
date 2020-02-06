@@ -29,7 +29,6 @@ public class NetMon extends JPanel{
 	private Timer updatetimer;
 	private Timer phasetimer;
 	private Graphics g;
-	public ArrayList<Service> services = new ArrayList<Service>();
 
 	/**
 	 * creates the loop
@@ -41,8 +40,8 @@ public class NetMon extends JPanel{
 
 		startTimers();
 		try {
-			loadServices("Services.NetMon");
-			Settings.loadSettings("settings.NetMon");
+			ServiceManager.loadServices("Services.NetMon");
+			SettingsManager.loadSettings("settings.NetMon");
 		} catch (IOException e) {
 		}
 	}
@@ -61,18 +60,6 @@ public class NetMon extends JPanel{
 		timer.setRepeats(true);
 	}
 
-	private void loadServices(String f) throws IOException {
-		File file = new File(f); 
-		BufferedReader br = new BufferedReader(new FileReader(file)); 
-
-		String st; 
-		while ((st = br.readLine()) != null) {
-			String[] stDataSplit = st.split("\\|");
-			services.add(new Service(stDataSplit[0],stDataSplit[1]));
-		}
-		br.close();
-	}
-
 	private class RenderTimerListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			g.setColor(Color.black);
@@ -81,12 +68,12 @@ public class NetMon extends JPanel{
 			int size = 250;
 			int gap = 50;
 			String statusMsg = "";
-			if (Settings.compact) {
+			if (SettingsManager.compact) {
 				gap = (WIDTH%size)/(WIDTH/size);
 			}
 			int xpos = gap;
 			int ypos = gap/4;
-			for(Service temp: services) {
+			for(Service temp: ServiceManager.services) {
 				Service.status t = temp.savedStatus;
 				if (t == Service.status.UP) {
 					g.setColor(Color.green);
@@ -150,7 +137,7 @@ public class NetMon extends JPanel{
 
 		@Override
 		public void run() {
-			for(Service temp: services) {
+			for(Service temp: ServiceManager.services) {
 				temp.increaseUpTime();
 			}
 		}
@@ -166,7 +153,7 @@ public class NetMon extends JPanel{
 
 		@Override
 		public void run() {
-			for(Service temp: services) {
+			for(Service temp: ServiceManager.services) {
 				temp.switchPhase();
 			}
 		}
@@ -182,7 +169,7 @@ public class NetMon extends JPanel{
 
 		@Override
 		public void run() {
-			for(Service temp: services) {
+			for(Service temp: ServiceManager.services) {
 				try {
 					temp.isUp();
 				} catch (IOException e1) {

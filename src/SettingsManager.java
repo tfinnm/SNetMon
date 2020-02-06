@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Settings {
+public class SettingsManager {
 
 	public static int latet;
 	public static int critt;
