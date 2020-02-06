@@ -1,15 +1,18 @@
+package Services;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import Settings.SettingsManager;
+
 public class Service {
 
-	String name;
-	String adress;
-	boolean phase = true;
-	boolean down = false;
-	enum status {
+	public String name;
+	public String adress;
+	public boolean phase = true;
+	public boolean down = false;
+	public enum status {
 		UP,
 		SLOW,
 		CRITICAL,
@@ -17,10 +20,10 @@ public class Service {
 		DOWN,
 		ERROR
 	}
-	status savedStatus = status.UP;
-	int misses = 0;
-	int criticals = 0;
-	int uptime = 0;
+	public status savedStatus = status.ERROR;
+	public int misses = 0;
+	public int criticals = 0;
+	public int uptime = 0;
 
 
 	public Service(String n, String a) {
