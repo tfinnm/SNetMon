@@ -1,6 +1,11 @@
 #Render Settings
 compact=false
+bar=true
+size=250
 #Status Thresholds
 late=5
 critical=100
 miss=1000
+#delays
+render=250
+ping=1000

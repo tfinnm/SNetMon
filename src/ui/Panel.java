@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import application.TimerManager;
+import settings.SettingsManager;
 
 
 public class Panel extends JPanel{
@@ -15,7 +16,7 @@ public class Panel extends JPanel{
 	
 	public Panel() {
 
-		TimerManager.startTimer(TimerManager.rendertimer, 50, new RenderTimerListener(), true);
+		TimerManager.startTimer(TimerManager.rendertimer, SettingsManager.renderDelay, new RenderTimerListener(), true);
 
 	}
 	

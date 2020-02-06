@@ -9,6 +9,9 @@ public class SettingsManager {
 	public static int latet;
 	public static int critt;
 	public static int misst;
+	public static int renderDelay;
+	public static int pingDelay;
+	public static int size;
 	public static boolean compact;
 	public static boolean topbar;
 
@@ -30,6 +33,12 @@ public class SettingsManager {
 					latet = Integer.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("miss")) {
 					misst = Integer.valueOf(stDataSplit[1]);
+				} else if (stDataSplit[0].equals("render")) {
+					renderDelay = Integer.valueOf(stDataSplit[1]);
+				} else if (stDataSplit[0].equals("ping")) {
+					pingDelay = Integer.valueOf(stDataSplit[1]);
+				} else if (stDataSplit[0].equals("size")) {
+					size = Integer.valueOf(stDataSplit[1]);
 				}
 			}
 		}

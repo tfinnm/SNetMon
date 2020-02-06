@@ -18,8 +18,8 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, UIManager.WIDTH, UIManager.HEIGHT);
 
-		int size = 250;
-		int gap = 50;
+		int size = SettingsManager.size;
+		int gap = size/5;
 		int barWidth = 25;
 		String statusMsg = "";
 		if (SettingsManager.compact) {

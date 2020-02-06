@@ -7,6 +7,7 @@ import javax.swing.Timer;
 
 import services.UpdateTimerListener;
 import services.UptimeTimerListener;
+import settings.SettingsManager;
 import ui.PhaseTimerListener;
 
 public class TimerManager {
@@ -18,7 +19,7 @@ public class TimerManager {
 
 	public static void startTimers() {
 		startTimer(clockstimer, 1000, new UptimeTimerListener(), true);
-		startTimer(updatetimer, 1000, new UpdateTimerListener(), true);
+		startTimer(updatetimer, SettingsManager.pingDelay, new UpdateTimerListener(), true);
 		startTimer(phasetimer, 1000, new PhaseTimerListener(), true);
 	}
 	
