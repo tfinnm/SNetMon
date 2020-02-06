@@ -1,10 +1,10 @@
-package Services;
+package services;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import Settings.SettingsManager;
+import settings.SettingsManager;
 
 public class Service {
 
