@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import services.Service;
 import services.ServiceManager;
@@ -29,6 +32,16 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 		if (SettingsManager.topbar) {
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, UIManager.WIDTH, barWidth);
+			g.setColor(Color.white);
+			g.setFont(new Font("Impact", Font.BOLD, 15));
+			g.drawString("B L I P", 10, barWidth/2+7);
+			g.setFont(new Font("Impact", Font.ITALIC, 10));
+			g.drawString("v1.0", 60, barWidth/2+7);
+			g.setFont(new Font("Impact", Font.PLAIN, 15));
+			String clock = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d/M/uuuu | k:m:s")).toString();
+			g.drawString(clock,UIManager.WIDTH/2-g.getFontMetrics(g.getFont()).stringWidth(clock)/2, barWidth/2+7);
+			String servicesMsg = ServiceManager.services.size()+" Services";
+			g.drawString(servicesMsg,UIManager.WIDTH-g.getFontMetrics(g.getFont()).stringWidth(servicesMsg)-10, barWidth/2+7);
 			ypos += barWidth;
 			
 		}

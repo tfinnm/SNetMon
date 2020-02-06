@@ -5,11 +5,15 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import services.Service;
+
 public class UIManager {
 	//heights
 	public static final int WIDTH = Integer.valueOf(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
 	public static final int HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 	static Panel ui = new Panel();
+	
+	static Service feature;
 	
 	public static void createFrame() {
 		JFrame frame = new JFrame();
