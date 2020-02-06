@@ -12,12 +12,14 @@ public class Service {
 	enum status {
 		UP,
 		SLOW,
+		CRITICAL,
 		MISSED,
 		DOWN,
 		ERROR
 	}
 	status savedStatus = status.UP;
 	int misses = 0;
+	int criticals = 0;
 	int uptime = 0;
 
 
@@ -29,9 +31,9 @@ public class Service {
 	public void increaseUpTime() {
 		uptime++;
 	}
-	
+
 	private status miss() {
-		if (misses < 3) {
+		if (misses < 3) {	
 			misses++;
 			savedStatus = status.MISSED;
 			return status.MISSED;
@@ -50,7 +52,7 @@ public class Service {
 	public void switchPhase() {
 		phase = !phase;
 	}
-	
+
 	public status isUp() throws IOException {
 		InetAddress net;
 		try {
@@ -58,7 +60,7 @@ public class Service {
 		} catch (UnknownHostException e) {
 			return miss();
 		}
-		if (net.isReachable(50)) {
+		if (net.isReachable(5)) {
 			if (down) {
 				uptime = 0;
 				down = false;
@@ -66,7 +68,7 @@ public class Service {
 			misses = 0;
 			savedStatus = status.UP;
 			return status.UP;
-		} else if (net.isReachable(500)) {
+		} else if (net.isReachable(100)) {
 			if (down) {
 				uptime = 0;
 				down = false;
@@ -75,11 +77,16 @@ public class Service {
 			savedStatus = status.SLOW;
 			return status.SLOW;
 		}
-		return miss();
+		if (misses < 1 && net.isReachable(1000)) {
+			savedStatus = status.CRITICAL;
+			return status.CRITICAL;
+		} else {
+			return miss();
+		}
 	}
 
 	public String getUp() {
-		return (uptime/360)+"h "+((uptime%360)/60)+"m "+(uptime%60)+"s";
+		return (uptime/3600)+"h "+((uptime%3600)/60)+"m "+(uptime%60)+"s";
 	}
 
 }

@@ -5,6 +5,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -36,31 +39,38 @@ public class NetMon extends JPanel{
 		image =  new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
-		// create a Timer object and call the listener defined in the private class below
-		// The listener can be called anything you chose
-		rendertimer = new Timer(1000, new RenderTimerListener());
-		rendertimer.setRepeats(true);
-		rendertimer.start();
-		rendertimer.setRepeats(true);
+		startTimers();
+		try {
+			loadServices("Services.NetMon");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void startTimers() {
+		startTimer(rendertimer, 1000, new RenderTimerListener());
+		startTimer(clockstimer, 1000, new ClocksTimerListener());
+		startTimer(updatetimer, 1000, new UpdateTimerListener());
+	}
+	
+	private void startTimer(Timer timer, int milliseconds, ActionListener timerlistener) {
+		timer = new Timer(milliseconds, timerlistener);
+		timer.setRepeats(true);
+		timer.start();
+		timer.setRepeats(true);
+	}
 
-		clockstimer = new Timer(1000, new ClocksTimerListener());
-		clockstimer.setRepeats(true);
-		clockstimer.start();
-		clockstimer.setRepeats(true);
+	private void loadServices(String f) throws IOException {
+		File file = new File(f); 
+		BufferedReader br = new BufferedReader(new FileReader(file)); 
 
-		updatetimer = new Timer(1000, new UpdateTimerListener());
-		updatetimer.setRepeats(true);
-		updatetimer.start();
-		updatetimer.setRepeats(true);
-
-		services.add(new Service("test","localhost"));
-		services.add(new Service("test2","192.168.1.1"));
-		services.add(new Service("test3","tfinnm.tk"));
-		services.add(new Service("test4","www.google.com"));
-		services.add(new Service("test5","http://www.google.com"));
-		services.add(new Service("test6","http://www.google.com/"));
-		services.add(new Service("test7","example.com"));
-
+		String st; 
+		while ((st = br.readLine()) != null) {
+			String[] stDataSplit = st.split("\\|");
+			services.add(new Service(stDataSplit[0],stDataSplit[1]));
+		}
+		br.close();
 	}
 
 	private class RenderTimerListener implements ActionListener {
@@ -69,7 +79,8 @@ public class NetMon extends JPanel{
 			g.fillRect(0, 0, WIDTH, HEIGHT);
 
 			int size = 250;
-			int gap = 50; 
+			int gap = 50;
+			String statusMsg = "";
 			if (optimized) {
 				gap = (WIDTH%size)/(WIDTH/size);
 			}
@@ -79,12 +90,24 @@ public class NetMon extends JPanel{
 				Service.status t = temp.savedStatus;
 				if (t == Service.status.UP) {
 					g.setColor(Color.green);
+					statusMsg = "O.K.";
 				} else if (t == Service.status.SLOW) {
 					g.setColor(Color.yellow);
+					statusMsg = "Responded Late";
+				} else if (t == Service.status.CRITICAL) {
+					temp.switchPhase();
+					statusMsg = "Critically Slow";
+					if (temp.phase) {
+						g.setColor(Color.yellow);
+					} else {
+						g.setColor(Color.red);
+					}
 				} else if (t == Service.status.MISSED) {
 					g.setColor(Color.orange);
+					statusMsg = "Missed Ping";
 				}else if (t == Service.status.DOWN) {
 					temp.switchPhase();
+					statusMsg = "Offline";
 					if (temp.phase) {
 						g.setColor(Color.red);
 					} else {
@@ -92,10 +115,14 @@ public class NetMon extends JPanel{
 					}
 				} else if (t == Service.status.ERROR) {
 					g.setColor(Color.blue);
+					statusMsg = "ERROR";
 				} else {
+					statusMsg = "ERROR";
 					g.setColor(Color.blue);
 				}
 				g.drawRect(xpos, ypos, size, size);
+				g.setFont(new Font("Ubuntu", Font.BOLD, 30));
+				g.drawString(statusMsg, (xpos+size/2)-(g.getFontMetrics(g.getFont()).stringWidth(statusMsg)/2), ypos+(size/3)*2);
 				g.setColor(Color.white);
 				g.setFont(new Font("Ubuntu", Font.BOLD, 25));
 				g.drawString(temp.name, (xpos+size/2)-(g.getFontMetrics(g.getFont()).stringWidth(temp.name)/2), ypos+size/5);
@@ -129,8 +156,8 @@ public class NetMon extends JPanel{
 				temp.increaseUpTime();
 			}
 		}
-		
-		
+
+
 	}
 
 	private class UpdateTimerListener implements ActionListener, Runnable {
