@@ -12,7 +12,7 @@ import settings.SettingsManager;
 public class RenderTimerListener implements java.awt.event.ActionListener {
 
 	private Graphics g;
-	
+
 	public void actionPerformed(ActionEvent e) {
 		g = UIManager.ui.g;
 		g.setColor(Color.black);
@@ -20,12 +20,19 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 
 		int size = 250;
 		int gap = 50;
+		int barWidth = 25;
 		String statusMsg = "";
 		if (SettingsManager.compact) {
 			gap = (UIManager.WIDTH%size)/(UIManager.WIDTH/size);
 		}
+		int ypos = (gap/4);
+		if (SettingsManager.topbar) {
+			g.setColor(Color.gray);
+			g.fillRect(0, 0, UIManager.WIDTH, barWidth);
+			ypos += barWidth;
+			
+		}
 		int xpos = gap;
-		int ypos = gap/4;
 		for(Service temp: ServiceManager.services) {
 			Service.status t = temp.savedStatus;
 			if (t == Service.status.UP) {
@@ -69,14 +76,12 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 			g.setFont(new Font("Ubuntu", Font.PLAIN, 15));
 			g.drawString(temp.getUp(), (xpos+size/2)-(g.getFontMetrics(g.getFont()).stringWidth(temp.getUp())/2), ypos+(size/5)*4);
 			xpos += size+gap;
-			if (xpos > UIManager.WIDTH) {
+			if (xpos+size > UIManager.WIDTH) {
 				xpos = gap;
 				ypos += size + gap;
 			}
-			System.out.print(xpos+","+ypos);
 		}
 
-		System.out.println();
 		// This is the last line of actionPerformed
 		UIManager.ui.repaint();
 	}

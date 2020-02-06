@@ -10,6 +10,7 @@ public class SettingsManager {
 	public static int critt;
 	public static int misst;
 	public static boolean compact;
+	public static boolean topbar;
 
 	public static void loadSettings(String f) throws IOException {
 		File file = new File(f);
@@ -21,6 +22,8 @@ public class SettingsManager {
 				String[] stDataSplit = st.split("=");
 				if (stDataSplit[0].equals("compact")) {
 					compact = Boolean.valueOf(stDataSplit[1]);
+				} else if (stDataSplit[0].equals("bar")) {
+					topbar = Boolean.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("critical")) {
 					critt = Integer.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("late")) {
