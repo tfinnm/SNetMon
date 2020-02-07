@@ -10,10 +10,11 @@ import input.KeyboardHandler;
 import settings.SettingsManager;
 
 
+@SuppressWarnings("serial")
 public class Panel extends JPanel{
 
-	private static BufferedImage image =  new BufferedImage(UIManager.WIDTH, UIManager.HEIGHT, BufferedImage.TYPE_INT_RGB);
-	static Graphics g = image.getGraphics();
+	private BufferedImage image =  new BufferedImage(UIManager.WIDTH, UIManager.HEIGHT, BufferedImage.TYPE_INT_RGB);
+	Graphics g = image.getGraphics();
 	
 	public Panel() {
 

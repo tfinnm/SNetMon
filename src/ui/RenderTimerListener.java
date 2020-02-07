@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -79,6 +78,33 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 			g.setFont(new Font("Ubuntu", Font.PLAIN, 30));
 			g.drawString(UIManager.featured.adress, (UIManager.WIDTH*3/8)+5, UIManager.HEIGHT*3/4-35);
 			g.drawString(UIManager.featured.getUp(), (UIManager.WIDTH*5/8)-(g.getFontMetrics(g.getFont()).stringWidth(UIManager.featured.getUp()))-5, UIManager.HEIGHT*3/4-35);
+			if (UIManager.featured.remove) {
+				g.setColor(Color.red);
+				g.drawString("Confirm Delete? (y/n)", (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth("Confirm Delete? (y/n)")/2), UIManager.HEIGHT/3);
+			}
+		}
+		if(ServiceManager.add) {
+			g.setFont(new Font("Ubuntu", Font.PLAIN, 30));
+			g.setColor(Color.black);
+			g.fillRect(UIManager.WIDTH/4, UIManager.HEIGHT/3, UIManager.WIDTH/2, UIManager.HEIGHT/3);
+			g.setColor(Color.white);
+			g.drawRect(UIManager.WIDTH/4, UIManager.HEIGHT/3, UIManager.WIDTH/2, UIManager.HEIGHT/3);
+			g.drawString("Service Name:", UIManager.WIDTH/4+10, UIManager.HEIGHT*7/16);
+			int s1l = g.getFontMetrics(g.getFont()).stringWidth("Service Name:");
+			g.drawString("Service Address:", UIManager.WIDTH/4+10, UIManager.HEIGHT*9/16);
+			int s2l = g.getFontMetrics(g.getFont()).stringWidth("Service Address:");
+			g.fillRect(UIManager.WIDTH/4+20+s1l, UIManager.HEIGHT*7/16-30, UIManager.WIDTH/2-s1l-30, 30);
+			g.fillRect(UIManager.WIDTH/4+20+s2l, UIManager.HEIGHT*9/16-30, UIManager.WIDTH/2-s2l-30, 30);
+			g.setColor(Color.black);
+			String l1 = ServiceManager.nameLine;
+			String l2 = ServiceManager.addrLine;
+			if (ServiceManager.line == 0) {
+				l1 += "|";
+			} else {
+				l2 += "|";
+			}
+			g.drawString(l1,UIManager.WIDTH/4+30+s1l, UIManager.HEIGHT*7/16);
+			g.drawString(l2,UIManager.WIDTH/4+30+s2l, UIManager.HEIGHT*9/16);
 		}
 
 		// This is the last line of actionPerformed

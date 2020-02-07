@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import input.KeyboardHandler;
 import services.Service;
 
 public class UIManager {

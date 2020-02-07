@@ -2,6 +2,7 @@ package input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import services.ServiceManager;
 import ui.UIManager;
@@ -10,32 +11,76 @@ public class KeyboardHandler implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		if (arg0.getKeyCode() == KeyEvent.VK_UP) {
-			ServiceManager.services.add(ServiceManager.services.get(0));
-			ServiceManager.services.remove(0);
-		} else if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			UIManager.featured = null;
-		} else if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {
-			ServiceManager.services.add(0,ServiceManager.services.get(ServiceManager.services.size()-1));
-			ServiceManager.services.remove(ServiceManager.services.size()-1);
-		} else if (arg0.getKeyCode() == KeyEvent.VK_SPACE || arg0.getKeyCode() == KeyEvent.VK_0) {
-			UIManager.featured = ServiceManager.services.get(0);
-		} else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
-			int ind = ServiceManager.services.indexOf(UIManager.featured);
-			if (ind < ServiceManager.services.size()-1) {
-			ind++;
+		if (ServiceManager.add) {
+			if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+				if (ServiceManager.line == 0) {
+					ServiceManager.line = 1;
+				} else {
+					try {
+						ServiceManager.addService("Services.NetMon", ServiceManager.nameLine, ServiceManager.addrLine);
+					} catch (IOException e) {
+					}
+					ServiceManager.add = false;
+					ServiceManager.line = 0;
+					ServiceManager.nameLine = "";
+					ServiceManager.addrLine = "";
+				}
+			} else if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				ServiceManager.add = false;
+				ServiceManager.line = 0;
+				ServiceManager.nameLine = "";
+				ServiceManager.addrLine = "";
 			} else {
-			ind = 0;
+				if (ServiceManager.line == 0) {
+					ServiceManager.nameLine += arg0.getKeyChar();
+				} else {
+					ServiceManager.addrLine += arg0.getKeyChar();
+				}
 			}
-			UIManager.featured = ServiceManager.services.get(ind);
-		} else if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
-			int ind = ServiceManager.services.indexOf(UIManager.featured);
-			if (ind > 0) {
-			ind--;
-			} else {
-			ind = ServiceManager.services.size()-1;
+		} else {
+			if (arg0.getKeyCode() == KeyEvent.VK_UP) {
+				ServiceManager.services.add(ServiceManager.services.get(0));
+				ServiceManager.services.remove(0);
+			} else if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE && UIManager.featured != null) {
+				UIManager.featured = null;
+				UIManager.featured.remove = false;
+			} else if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {
+				ServiceManager.services.add(0,ServiceManager.services.get(ServiceManager.services.size()-1));
+				ServiceManager.services.remove(ServiceManager.services.size()-1);
+			} else if (arg0.getKeyCode() == KeyEvent.VK_SPACE || arg0.getKeyCode() == KeyEvent.VK_0) {
+				UIManager.featured = ServiceManager.services.get(0);
+			} else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT && UIManager.featured != null) {
+				int ind = ServiceManager.services.indexOf(UIManager.featured);
+				if (ind < ServiceManager.services.size()-1) {
+					ind++;
+				} else {
+					ind = 0;
+				}
+				UIManager.featured = ServiceManager.services.get(ind);
+				UIManager.featured.remove = false;
+			} else if (arg0.getKeyCode() == KeyEvent.VK_LEFT && UIManager.featured != null) {
+				int ind = ServiceManager.services.indexOf(UIManager.featured);
+				if (ind > 0) {
+					ind--;
+				} else {
+					ind = ServiceManager.services.size()-1;
+				}
+				UIManager.featured = ServiceManager.services.get(ind);
+				UIManager.featured.remove = false;
+			} else if ((arg0.getKeyCode() == KeyEvent.VK_DELETE || arg0.getKeyCode() == KeyEvent.VK_BACK_SPACE) && UIManager.featured != null) {
+				UIManager.featured.remove = true;
+			} else if ((arg0.getKeyCode() == KeyEvent.VK_Y) && UIManager.featured.remove) {
+				try {
+					ServiceManager.removeService("Services.NetMon", UIManager.featured);
+				} catch (IOException e) {
+				}
+				ServiceManager.services.remove(UIManager.featured);
+				UIManager.featured = null;
+			} else if ((arg0.getKeyCode() == KeyEvent.VK_N) && UIManager.featured.remove) {
+				UIManager.featured.remove = false;
+			} else if ((arg0.getKeyCode() == KeyEvent.VK_ENTER)) {
+				ServiceManager.add = true;
 			}
-			UIManager.featured = ServiceManager.services.get(ind);
 		}
 	}
 
@@ -47,7 +92,7 @@ public class KeyboardHandler implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-	
+
 	}
 
 }

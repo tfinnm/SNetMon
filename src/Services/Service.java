@@ -12,6 +12,7 @@ public class Service {
 	public String adress;
 	public boolean phase = true;
 	public boolean down = false;
+	public boolean remove = false;
 	public enum status {
 		UP,
 		SLOW,
