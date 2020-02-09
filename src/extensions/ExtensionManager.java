@@ -42,7 +42,7 @@ public class ExtensionManager {
 		plugins.get(plugins.size()-1).loadExtension();
 	}
 
-	public static void triggerEvent(Service.status e) {
+	public static void triggerEvent(services.Status e) {
 
 		for (int j = 0; j < plugins.size(); j++) {
 			plugins.get(j).onEvent(e);

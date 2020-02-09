@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import extensions.ExtensionManager;
 import settings.SettingsManager;
 
 public class Service {
@@ -13,15 +14,7 @@ public class Service {
 	public boolean phase = true;
 	public boolean down = false;
 	public boolean remove = false;
-	public enum status {
-		UP,
-		SLOW,
-		CRITICAL,
-		MISSED,
-		DOWN,
-		ERROR
-	}
-	public status savedStatus = status.ERROR;
+	public Status savedStatus = Status.ERROR;
 	public int misses = 0;
 	public int criticals = 0;
 	public int uptime = 0;
@@ -36,20 +29,21 @@ public class Service {
 		uptime++;
 	}
 
-	private status miss() {
+	private Status miss() {
 		if (misses < 3) {	
 			misses++;
-			savedStatus = status.MISSED;
-			return status.MISSED;
+			savedStatus = Status.MISSED;
+			return Status.MISSED;
 		} else {
 			if (!down) {
 				uptime = 0;
 				down = true;
 				phase = true;
 				Toolkit.getDefaultToolkit().beep();
+				ExtensionManager.triggerEvent(Status.DOWN);
 			}
-			savedStatus = status.DOWN;
-			return status.DOWN;
+			savedStatus = Status.DOWN;
+			return Status.DOWN;
 		}
 	}
 
@@ -57,7 +51,7 @@ public class Service {
 		phase = !phase;
 	}
 
-	public status isUp() throws IOException {
+	public Status isUp() throws IOException {
 		InetAddress net;
 		try {
 			net = InetAddress.getByName(adress);
@@ -68,22 +62,25 @@ public class Service {
 			if (down) {
 				uptime = 0;
 				down = false;
+				ExtensionManager.triggerEvent(Status.UP);
 			}
 			misses = 0;
-			savedStatus = status.UP;
-			return status.UP;
+			savedStatus = Status.UP;
+			return Status.UP;
 		} else if (net.isReachable(SettingsManager.critt)) {
 			if (down) {
 				uptime = 0;
 				down = false;
+				ExtensionManager.triggerEvent(Status.UP);
 			}
 			misses = 0;
-			savedStatus = status.SLOW;
-			return status.SLOW;
+			savedStatus = Status.SLOW;
+			return Status.SLOW;
 		}
 		if (misses < 1 && net.isReachable(SettingsManager.misst)) {
-			savedStatus = status.CRITICAL;
-			return status.CRITICAL;
+			if (savedStatus != Status.CRITICAL) ExtensionManager.triggerEvent(Status.CRITICAL);
+			savedStatus = Status.CRITICAL;
+			return Status.CRITICAL;
 		} else {
 			return miss();
 		}
