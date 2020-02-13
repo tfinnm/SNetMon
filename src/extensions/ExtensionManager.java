@@ -1,6 +1,7 @@
 package extensions;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -23,20 +24,23 @@ public class ExtensionManager {
 			File[] files = dir.listFiles((d, name) -> name.endsWith(".class"));
 			for (int i = 0; i < files.length; i++) {
 				try {
-					loadExtension(files[i]);
-				} catch (MalformedURLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+					loadExtension(new File(DIR+"/"+files[i].getName()));
+				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
+					e.printStackTrace();
 				}
 			}
 		}
 	}
 
-	private static void loadExtension(File dir) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	private static void loadExtension(File dir) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
 		URL loadPath = dir.toURI().toURL();
 		URL[] classUrl = new URL[]{loadPath};
 
 		ClassLoader cl = new URLClassLoader(classUrl);
 
-		Class loadedClass = cl.loadClass(dir.getName());
+		//Class loadedClass = new URLClassLoader().loadClass(dir.getCanonicalPath());
+		//Class loadedClass = cl.loadClass(dir.getName().substring(0,dir.getName().length()-6));
+		Class loadedClass = cl.loadClass(dir.getCanonicalPath());
 
 		plugins.add((Extension)loadedClass.newInstance());
 		plugins.get(plugins.size()-1).loadExtension();

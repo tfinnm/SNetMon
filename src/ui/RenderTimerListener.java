@@ -37,7 +37,7 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 			g.setFont(new Font("Impact", Font.ITALIC, 10));
 			g.drawString("v1.0", 60, barWidth/2+7);
 			g.setFont(new Font("Impact", Font.PLAIN, 15));
-			String clock = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d/M/uuuu | k:m:s")).toString();
+			String clock = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d/M/uuuu | k:mm:ss")).toString();
 			g.drawString(clock,UIManager.WIDTH/2-g.getFontMetrics(g.getFont()).stringWidth(clock)/2, barWidth/2+7);
 			String servicesMsg = ServiceManager.services.size()+" Services";
 			g.drawString(servicesMsg,UIManager.WIDTH-g.getFontMetrics(g.getFont()).stringWidth(servicesMsg)-10, barWidth/2+7);

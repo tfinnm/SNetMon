@@ -13,7 +13,7 @@ public class NetMon {
 		try {
 			ServiceManager.loadServices("Services.NetMon");
 			SettingsManager.loadSettings("settings.NetMon");
-			ExtensionManager.loadExtensions();
+			//ExtensionManager.loadExtensions();
 		} catch (IOException e) {
 		}
 		TimerManager.startTimers();
