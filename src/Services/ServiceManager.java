@@ -6,6 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Toby McDonald <toby_mcdonald@email.com>
+ *
+ */
 public class ServiceManager {
 	public static ArrayList<Service> services = new ArrayList<Service>();
 

@@ -7,6 +7,11 @@ import java.io.IOException;
 import services.ServiceManager;
 import ui.UIManager;
 
+/**
+ * 
+ * @author Toby McDonald <toby_mcdonald@email.com>
+ *
+ */
 public class KeyboardHandler implements KeyListener {
 
 	@Override

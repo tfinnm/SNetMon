@@ -6,8 +6,19 @@ import services.*;
 import ui.UIManager;
 import settings.SettingsManager;
 
-public class NetMon {
+/**
+ * 
+ * @author Toby McDonald <toby_mcdonald@email.com>
+ * @version 1.0.0
+ */
+public class BLIP {
 	
+	/**
+	 * 
+	 * main method to run program.
+	 * 
+	 * @param args unused...
+	 */
 	public static void main(String[] args) {
 		UIManager.createFrame();
 		try {
