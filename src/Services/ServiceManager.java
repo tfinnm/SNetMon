@@ -12,11 +12,30 @@ import java.util.ArrayList;
  *
  */
 public class ServiceManager {
+
+	/**
+	 * ArrayList of Service objects. This is the official location to store and interact with services.
+	 */
 	public static ArrayList<Service> services = new ArrayList<Service>();
 
+	/**
+	 * Used to activate the new service gui
+	 */
 	public static boolean add = false;
+	/**
+	 * This is indicates what line the new service gui is on
+	 * @apiNote PLEASE DO NOT USE
+	 */
 	public static int line = 0;
+	/**
+	 * This is name entered in the new service gui
+	 * @apiNote PLEASE DO NOT USE
+	 */
 	public static String nameLine = "";
+	/**
+	 * This is the address entered in the new service gui
+	 * @apiNote PLEASE DO NOT USE
+	 */
 	public static String addrLine = "";
 	
 	public static void loadServices(String f) throws IOException {
