@@ -1,8 +1,7 @@
 package services;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 
 import extensions.ExtensionManager;
 import settings.SettingsManager;
@@ -33,12 +32,18 @@ public class Service {
 		if (misses < 3) {	
 			misses++;
 			savedStatus = Status.MISSED;
+			if (settings.SettingsManager.highlightMiss) {
+				ui.UIManager.featured = this;
+			}
 			return Status.MISSED;
 		} else {
 			if (!down) {
 				uptime = 0;
 				down = true;
 				phase = true;
+				if (settings.SettingsManager.highlightOff) {
+					ui.UIManager.featured = this;
+				}
 				Toolkit.getDefaultToolkit().beep();
 				ExtensionManager.triggerEvent(Status.DOWN);
 			}
@@ -78,7 +83,12 @@ public class Service {
 			return Status.SLOW;
 		}
 		if (misses < 1 && net.isReachable(SettingsManager.misst)) {
-			if (savedStatus != Status.CRITICAL) ExtensionManager.triggerEvent(Status.CRITICAL);
+			if (savedStatus != Status.CRITICAL) {
+				ExtensionManager.triggerEvent(Status.CRITICAL);
+				if (settings.SettingsManager.highlightCrit) {
+					ui.UIManager.featured = this;
+				}
+			}
 			savedStatus = Status.CRITICAL;
 			return Status.CRITICAL;
 		} else {

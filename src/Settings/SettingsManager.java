@@ -14,6 +14,9 @@ public class SettingsManager {
 	public static int size;
 	public static boolean compact;
 	public static boolean topbar;
+	public static boolean highlightCrit;
+	public static boolean highlightMiss;
+	public static boolean highlightOff;
 
 	public static void loadSettings(String f) throws IOException {
 		File file = new File(f);
@@ -27,6 +30,12 @@ public class SettingsManager {
 					compact = Boolean.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("bar")) {
 					topbar = Boolean.valueOf(stDataSplit[1]);
+				} else if (stDataSplit[0].equals("highlightMiss")) {
+					highlightMiss = Boolean.valueOf(stDataSplit[1]);
+				} else if (stDataSplit[0].equals("highlightOffline")) {
+					highlightOff = Boolean.valueOf(stDataSplit[1]);
+				} else if (stDataSplit[0].equals("highlightCritical")) {
+					highlightCrit = Boolean.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("critical")) {
 					critt = Integer.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("late")) {

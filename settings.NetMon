@@ -9,3 +9,7 @@ miss=1000
 #delays
 render=250
 ping=1000
+#Automatic Highlighting
+highlightOffline=false
+highlightCritical=false
+highlightMiss=false
