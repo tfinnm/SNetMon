@@ -17,7 +17,14 @@ public class Service {
 	public int misses = 0;
 	public int criticals = 0;
 	public int uptime = 0;
-
+	public String appMonMsg = "";
+	
+	public String getMsg() {
+		if (!appMonMsg.equals("")) {
+			return appMonMsg+"('A' to acknowlege)";
+		}
+		return "";
+	}
 
 	public Service(String n, String a) {
 		name = n;

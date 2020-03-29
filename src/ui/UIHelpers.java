@@ -16,6 +16,9 @@ public class UIHelpers {
 		} else if (t == services.Status.SLOW) {
 			g.setColor(Color.yellow);
 			statusMsg = "Responded Late";
+		} else if (t == services.Status.WARN) {
+			g.setColor(Color.orange);
+			statusMsg = "ALERT!";
 		} else if (t == services.Status.CRITICAL) {
 			statusMsg = "Critically Slow";
 			if (temp.phase) {

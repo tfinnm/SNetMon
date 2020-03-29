@@ -21,20 +21,30 @@ public class KeyboardHandler implements KeyListener {
 				if (ServiceManager.line == 0) {
 					ServiceManager.line = 1;
 				} else {
+					String selected = "s";
+					if (services.ServiceManager.SelectedType.equals(services.ServiceManager.ServiceType.application)) {
+						selected = "a";
+					}
 					try {
-						ServiceManager.addService("Services.NetMon", ServiceManager.nameLine, ServiceManager.addrLine);
+						ServiceManager.addService("Services.NetMon", ServiceManager.nameLine, ServiceManager.addrLine, selected);
 					} catch (IOException e) {
 					}
 					ServiceManager.add = false;
 					ServiceManager.line = 0;
 					ServiceManager.nameLine = "";
 					ServiceManager.addrLine = "";
+					ServiceManager.SelectedType = ServiceManager.ServiceType.server;
 				}
 			} else if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				ServiceManager.add = false;
 				ServiceManager.line = 0;
 				ServiceManager.nameLine = "";
 				ServiceManager.addrLine = "";
+				ServiceManager.SelectedType = ServiceManager.ServiceType.server;
+			} else if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+				ServiceManager.SelectedType = ServiceManager.ServiceType.server;
+			} else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+				ServiceManager.SelectedType = ServiceManager.ServiceType.application;
 			} else {
 				if (ServiceManager.line == 0) {
 					ServiceManager.nameLine += arg0.getKeyChar();
@@ -63,6 +73,8 @@ public class KeyboardHandler implements KeyListener {
 				}
 				UIManager.featured = ServiceManager.services.get(ind);
 				UIManager.featured.remove = false;
+			} else if (arg0.getKeyCode() == KeyEvent.VK_A && UIManager.featured != null) {
+				UIManager.featured.appMonMsg = "";
 			} else if (arg0.getKeyCode() == KeyEvent.VK_LEFT && UIManager.featured != null) {
 				int ind = ServiceManager.services.indexOf(UIManager.featured);
 				if (ind > 0) {

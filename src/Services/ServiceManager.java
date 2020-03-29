@@ -37,7 +37,14 @@ public class ServiceManager {
 	 * @apiNote PLEASE DO NOT USE
 	 */
 	public static String addrLine = "";
-	
+
+	public static enum ServiceType {
+		server,
+		application
+	}
+
+	public static ServiceType SelectedType = ServiceType.server;
+
 	public static void loadServices(String f) throws IOException {
 		File file = new File(f); 
 		BufferedReader br = new BufferedReader(new FileReader(file)); 
@@ -45,19 +52,32 @@ public class ServiceManager {
 		String st; 
 		while ((st = br.readLine()) != null) {
 			String[] stDataSplit = st.split("\\|");
-			services.add(new Service(stDataSplit[0],stDataSplit[1]));
+			if (stDataSplit[0].equals("s")) {
+				services.add(new Service(stDataSplit[1],stDataSplit[2]));
+			} else if (stDataSplit[0].equals("a")) {
+				services.add(new ApplicationService(stDataSplit[1],stDataSplit[2]));
+			} 
 		}
 		br.close();
 	}
 
-	public static void addService(String f, String n, String a) throws IOException {
-		String pass = n+"|"+a;
+	public static void addService(String f, String n, String a, String t) throws IOException {
+		String pass = t+"|"+n+"|"+a;
 		write(f,pass,true);
-		services.add(new Service(n,a));
+		if (t.equals("s")) {
+			services.add(new Service(n,a));
+		} else if (t.equals("a")) {
+			services.add(new ApplicationService(n,a));
+		}
 	}
 
 	public static void removeService(String f, Service s) throws IOException {
-		String pass = s.name+"|"+s.adress;
+		String pre = "s";
+		if (s instanceof ApplicationService) {
+			pre = "a";
+			((ApplicationService) s).exists = false;
+		}
+		String pass = pre+"|"+s.name+"|"+s.adress;
 		write(f,pass,false);
 		services.remove(s);
 	}

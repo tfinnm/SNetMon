@@ -8,8 +8,10 @@ package services;
 public enum Status {
 	UP,
 	SLOW,
+	WARN,
 	MISSED,
 	CRITICAL,
+	URGENT,
 	DOWN,
 	ERROR
 }

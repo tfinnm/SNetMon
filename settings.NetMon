@@ -10,6 +10,7 @@ miss=1000
 render=250
 ping=1000
 #Automatic Highlighting
-highlightOffline=false
+highlightOffline=true
 highlightCritical=false
 highlightMiss=false
+highlightWarn=true

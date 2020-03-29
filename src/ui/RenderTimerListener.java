@@ -35,7 +35,7 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 			g.setFont(new Font("Impact", Font.BOLD, 15));
 			g.drawString("B L I P", 10, barWidth/2+7);
 			g.setFont(new Font("Impact", Font.ITALIC, 10));
-			g.drawString("v1.0.1", 60, barWidth/2+7);
+			g.drawString("v2.0.0", 60, barWidth/2+7);
 			g.setFont(new Font("Impact", Font.PLAIN, 15));
 			String clock = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d/M/uuuu | k:mm:ss")).toString();
 			g.drawString(clock,UIManager.WIDTH/2-g.getFontMetrics(g.getFont()).stringWidth(clock)/2, barWidth/2+7);
@@ -78,6 +78,7 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 			g.setFont(new Font("Ubuntu", Font.PLAIN, 30));
 			g.drawString(UIManager.featured.adress, (UIManager.WIDTH*3/8)+5, UIManager.HEIGHT*3/4-35);
 			g.drawString(UIManager.featured.getUp(), (UIManager.WIDTH*5/8)-(g.getFontMetrics(g.getFont()).stringWidth(UIManager.featured.getUp()))-5, UIManager.HEIGHT*3/4-35);
+			g.drawString(UIManager.featured.getMsg(), (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth(UIManager.featured.getMsg())/2), UIManager.HEIGHT*5/8-35);
 			if (UIManager.featured.remove) {
 				g.setColor(Color.red);
 				g.drawString("Confirm Delete? (y/n)", (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth("Confirm Delete? (y/n)")/2), UIManager.HEIGHT/3);
@@ -105,6 +106,20 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 			}
 			g.drawString(l1,UIManager.WIDTH/4+30+s1l, UIManager.HEIGHT*7/16);
 			g.drawString(l2,UIManager.WIDTH/4+30+s2l, UIManager.HEIGHT*9/16);
+			
+			if (ServiceManager.SelectedType.equals(ServiceManager.ServiceType.server)) {
+				g.setColor(Color.white);
+				g.fillRect((UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth("Server")-10), UIManager.HEIGHT/2-15, (g.getFontMetrics(g.getFont()).stringWidth("Server")), 30);
+				g.drawString("Application", (UIManager.WIDTH/2)+10, UIManager.HEIGHT/2+15);
+				g.setColor(Color.black);
+				g.drawString("Server", (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth("Server")-10), UIManager.HEIGHT/2+15);
+			} else if (ServiceManager.SelectedType.equals(ServiceManager.ServiceType.application)) {
+				g.setColor(Color.white);
+				g.drawString("Server", (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth("Server")-10), UIManager.HEIGHT/2+15);
+				g.fillRect((UIManager.WIDTH/2)+10, UIManager.HEIGHT/2-15, (g.getFontMetrics(g.getFont()).stringWidth("Application")), 30);
+				g.setColor(Color.black);
+				g.drawString("Application", (UIManager.WIDTH/2)+10, UIManager.HEIGHT/2+15);
+			}
 		}
 
 		// This is the last line of actionPerformed

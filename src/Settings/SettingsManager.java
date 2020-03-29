@@ -17,6 +17,7 @@ public class SettingsManager {
 	public static boolean highlightCrit;
 	public static boolean highlightMiss;
 	public static boolean highlightOff;
+	public static boolean highlightWarn;
 
 	public static void loadSettings(String f) throws IOException {
 		File file = new File(f);
@@ -36,6 +37,8 @@ public class SettingsManager {
 					highlightOff = Boolean.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("highlightCritical")) {
 					highlightCrit = Boolean.valueOf(stDataSplit[1]);
+				} else if (stDataSplit[0].equals("highlightWarn")) {
+					highlightWarn = Boolean.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("critical")) {
 					critt = Integer.valueOf(stDataSplit[1]);
 				} else if (stDataSplit[0].equals("late")) {
