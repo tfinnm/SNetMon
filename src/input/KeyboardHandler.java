@@ -17,7 +17,15 @@ public class KeyboardHandler implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if (ServiceManager.add) {
-			if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+			if ((arg0.getKeyCode() == KeyEvent.VK_SHIFT) || (arg0.getKeyCode() == KeyEvent.VK_CAPS_LOCK)) {
+				
+			} else if (arg0.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+				if (ServiceManager.line == 0) {
+					ServiceManager.nameLine = ServiceManager.nameLine.substring(0, ServiceManager.nameLine.length() - 1);
+				} else {
+					ServiceManager.addrLine = ServiceManager.addrLine.substring(0, ServiceManager.addrLine.length() - 1);
+				}
+			} else if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 				if (ServiceManager.line == 0) {
 					ServiceManager.line = 1;
 				} else {
