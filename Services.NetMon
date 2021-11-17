@@ -1,4 +1,5 @@
 s|DSC-Bot Server|raspberrypi.home
 s|Gateway|10.228.160.2
-s|Website|tfinnm.tk
-a|gfg|fgfg
+s|Self Test|localhost
+s|Internet|www.google.com
+a|Test App|YEET
