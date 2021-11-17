@@ -18,7 +18,6 @@ public class KeyboardHandler implements KeyListener {
 	public void keyPressed(KeyEvent arg0) {
 		if (ServiceManager.add) {
 			if ((arg0.getKeyCode() == KeyEvent.VK_SHIFT) || (arg0.getKeyCode() == KeyEvent.VK_CAPS_LOCK)) {
-				
 			} else if (arg0.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 				if (ServiceManager.line == 0) {
 					ServiceManager.nameLine = ServiceManager.nameLine.substring(0, ServiceManager.nameLine.length() - 1);
@@ -65,8 +64,8 @@ public class KeyboardHandler implements KeyListener {
 				ServiceManager.services.add(ServiceManager.services.get(0));
 				ServiceManager.services.remove(0);
 			} else if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE && UIManager.featured != null) {
-				UIManager.featured = null;
 				UIManager.featured.remove = false;
+				UIManager.featured = null;
 			} else if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {
 				ServiceManager.services.add(0,ServiceManager.services.get(ServiceManager.services.size()-1));
 				ServiceManager.services.remove(ServiceManager.services.size()-1);

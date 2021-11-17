@@ -81,7 +81,7 @@ public class RenderTimerListener implements java.awt.event.ActionListener {
 			g.drawString(UIManager.featured.getMsg(), (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth(UIManager.featured.getMsg())/2), UIManager.HEIGHT*5/8-35);
 			if (UIManager.featured.remove) {
 				g.setColor(Color.red);
-				g.drawString("Confirm Delete? (y/n)", (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth("Confirm Delete? (y/n)")/2), UIManager.HEIGHT/3);
+				g.drawString("Confirm Delete? (y/n)", (UIManager.WIDTH/2)-(g.getFontMetrics(g.getFont()).stringWidth("Confirm Delete? (y/n)")/2), ((UIManager.HEIGHT/4+60)+(UIManager.HEIGHT*3/4-35))/2);
 			}
 		}
 		if(ServiceManager.add) {
